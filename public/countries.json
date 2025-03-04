@@ -1,0 +1,39 @@
+{
+    "Facile": [
+      { "name": "France", "capital": "Paris", "flag": "https://flagcdn.com/w320/fr.png" },
+      { "name": "USA", "capital": "Washington", "flag": "https://flagcdn.com/w320/us.png" },
+      { "name": "Japon", "capital": "Tokyo", "flag": "https://flagcdn.com/w320/jp.png" },
+      { "name": "Allemagne", "capital": "Berlin", "flag": "https://flagcdn.com/w320/de.png" },
+      { "name": "Royaume-Uni", "capital": "Londres", "flag": "https://flagcdn.com/w320/gb.png" },
+      { "name": "Italie", "capital": "Rome", "flag": "https://flagcdn.com/w320/it.png" },
+      { "name": "Espagne", "capital": "Madrid", "flag": "https://flagcdn.com/w320/es.png" },
+      { "name": "Brésil", "capital": "Brasilia", "flag": "https://flagcdn.com/w320/br.png" },
+      { "name": "Canada", "capital": "Ottawa", "flag": "https://flagcdn.com/w320/ca.png" },
+      { "name": "Australie", "capital": "Canberra", "flag": "https://flagcdn.com/w320/au.png" }
+    ],
+    "Moyen": [
+      { "name": "Portugal", "capital": "Lisbonne", "flag": "https://flagcdn.com/w320/pt.png" },
+      { "name": "Maroc", "capital": "Rabat", "flag": "https://flagcdn.com/w320/ma.png" },
+      { "name": "Mexique", "capital": "Mexico", "flag": "https://flagcdn.com/w320/mx.png" },
+      { "name": "Suède", "capital": "Stockholm", "flag": "https://flagcdn.com/w320/se.png" },
+      { "name": "Norvège", "capital": "Oslo", "flag": "https://flagcdn.com/w320/no.png" },
+      { "name": "Pérou", "capital": "Lima", "flag": "https://flagcdn.com/w320/pe.png" },
+      { "name": "Grèce", "capital": "Athènes", "flag": "https://flagcdn.com/w320/gr.png" },
+      { "name": "Argentine", "capital": "Buenos Aires", "flag": "https://flagcdn.com/w320/ar.png" },
+      { "name": "Thaïlande", "capital": "Bangkok", "flag": "https://flagcdn.com/w320/th.png" },
+      { "name": "Afrique du Sud", "capital": "Pretoria", "flag": "https://flagcdn.com/w320/za.png" }
+    ],
+    "Difficile": [
+      { "name": "Botswana", "capital": "Gaborone", "flag": "https://flagcdn.com/w320/bw.png" },
+      { "name": "Bhoutan", "capital": "Thimphou", "flag": "https://flagcdn.com/w320/bt.png" },
+      { "name": "Nauru", "capital": "Yaren", "flag": "https://flagcdn.com/w320/nr.png" },
+      { "name": "Comores", "capital": "Moroni", "flag": "https://flagcdn.com/w320/km.png" },
+      { "name": "Kiribati", "capital": "Tarawa", "flag": "https://flagcdn.com/w320/ki.png" },
+      { "name": "Tuvalu", "capital": "Funafuti", "flag": "https://flagcdn.com/w320/tv.png" },
+      { "name": "Lesotho", "capital": "Maseru", "flag": "https://flagcdn.com/w320/ls.png" },
+      { "name": "Erythrée", "capital": "Asmara", "flag": "https://flagcdn.com/w320/er.png" },
+      { "name": "Vanuatu", "capital": "Port-Vila", "flag": "https://flagcdn.com/w320/vu.png" },
+      { "name": "Sainte-Lucie", "capital": "Castries", "flag": "https://flagcdn.com/w320/lc.png" }
+    ]
+  }
+  

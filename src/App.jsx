@@ -5,6 +5,7 @@ import ParticlesComponent from './components/Particule'
 import Home from './views/Home'
 import ModeJeu from './views/Mode_jeu';
 import DrapeauJeu from './views/DrapeauJeu';
+import CapitalJeu from './views/CapitalJeu';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />}/>
         <Route path="/solo" element={<ModeJeu />}/>
         <Route path="/mode/drapeau" element={<DrapeauJeu />} />
+        <Route path="/mode/capital" element={<CapitalJeu />} />
       </Routes>
     </div>
   )
