@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import Drapeau from "../assets/drapeau-logo.png";
 import Capital from "../assets/capital-logo.png";
 import Carte from "../assets/carte-logo.png";
+import NavigationButtons from "../components/NavigationButtons";
 
 // Tableau des modes de jeu
 const MODES_JEU = [
-  { id: 1, nom: "Trouver le drapeau", logo: Drapeau, route: "/mode/drapeau" },
+  { id: 1, nom: "Trouve le drapeau", logo: Drapeau, route: "/mode/drapeau" },
   { id: 2, nom: "Trouve la capitale", logo: Capital, route: "/mode/capital" },
   { id: 3, nom: "Trouve sur la carte", logo: Carte, route: "/mode/carte" },
 ];
@@ -14,6 +15,7 @@ const MODES_JEU = [
 export default function ModeJeu() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
+      <NavigationButtons/>
       <h1 className="text-white text-3xl font-bold font-pixel text-center mb-10">
         Choisis ton mode de jeu :
       </h1>
