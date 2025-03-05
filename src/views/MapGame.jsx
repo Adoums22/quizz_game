@@ -77,7 +77,7 @@ export default function MapGame() {
     setTimeout(() => {
       setIsCorrect(null);
       chargerNouvelleQuestion(); // Charger un nouveau pays après chaque question
-    }, 3000);
+    }, 2000);
   };
   
 
@@ -116,7 +116,7 @@ export default function MapGame() {
   
             <div className="w-full mb-4">
               <ComposableMap>
-                <Geographies geography="/features.json">
+                <Geographies geography={`${import.meta.env.BASE_URL}features.json`}>
                   {({ geographies }) =>
                     geographies.map((geo) => (
                       <Geography
