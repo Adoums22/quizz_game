@@ -12,3 +12,13 @@ body{
   height: 100%;
   z-index: -10;
 }
+
+
+/* Applique un zoom uniquement à la carte */
+.map-container {
+  transition: transform 0.3s ease;
+}
+
+.map-container.zoomed {
+  transform: scale(1.5); /* Zoom à 1.5x */
+}

@@ -9,6 +9,13 @@ export const GameProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    // Si currentCountry est null au démarrage, appeler loadCountry
+    if (!currentCountry) {
+      loadCountry(); // Appel immédiat lors du montage du composant
+    }
+  }, []);  // [] : Cette useEffect s'exécute uniquement lors du montage initial
+
+  useEffect(() => {
     if (currentCountry) {
       localStorage.setItem("currentCountry", JSON.stringify(currentCountry));
     }
@@ -17,7 +24,7 @@ export const GameProvider = ({ children }) => {
   const loadCountry = async () => {
     if (!currentCountry) {
       const country = await getRandomCountry();
-      setCurrentCountry(country);
+      setCurrentCountry(country);  // Mettre à jour currentCountry
     }
   };
 

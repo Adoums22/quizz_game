@@ -31,7 +31,7 @@ export default function CapitalJeu() { // ✅ Corrigé pour correspondre au fich
   };
 
   useEffect(() => {
-    const savedQuestion = localStorage.getItem("currentQuestion");
+    const savedQuestion = localStorage.getItem("capitalQuestion");
     if (savedQuestion) {
       const parsed = JSON.parse(savedQuestion);
       setDrapeau(parsed.flag);
@@ -45,13 +45,17 @@ export default function CapitalJeu() { // ✅ Corrigé pour correspondre au fich
   
   useEffect(() => {
     if (nomPays) {
-      localStorage.setItem("currentQuestion", JSON.stringify({ flag: drapeau, name: nomPays, capital: bonneReponse, options }));
+      localStorage.setItem(
+        "capitalQuestion",
+        JSON.stringify({ flag: drapeau, name: nomPays, capital: bonneReponse, options })
+      );
     }
   }, [drapeau, nomPays, bonneReponse, options]);
   
+  
 
   const verifierReponse = (choix) => {
-    if (!bonneReponse) return; // ✅ Évite les erreurs si les données ne sont pas chargées
+    if (!bonneReponse) return;
 
     setSelectedAnswer(choix);
     const correct = choix === bonneReponse;
@@ -69,7 +73,7 @@ export default function CapitalJeu() { // ✅ Corrigé pour correspondre au fich
   };
 
   if (vies <= 0) {
-    return <GameOverScreen mode="capitale" onReplay={rejouer} onReturnMenu={retourMenu} />;
+    return <GameOverScreen mode="capitaleMode" onReplay={rejouer} onReturnMenu={retourMenu} />;
   }
 
   return (

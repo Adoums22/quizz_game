@@ -3,92 +3,119 @@ import FlagDisplay from "../components/FlagDisplay";
 import NavigationButtons from "../components/NavigationButtons";
 import GameOverScreen from "../components/GameOverScreen";
 import useGameStats from "../components/useGameStats";
-import { useGame } from "../context/GameContext";
+import { getRandomCountry } from "../services/countryService";
 
-export default function CapitalJeu() {
-  const { score, setScore, vies, setVies, rejouer, retourMenu } = useGameStats("capitaleMode");
-  const { currentCountry, loadCountry } = useGame();
+export default function DrapeauJeu() {
+  const { score, setScore, vies, setVies, rejouer, retourMenu } = useGameStats("drapeauMode");
 
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [isCorrect, setIsCorrect] = useState(null);
+  const [drapeau, setDrapeau] = useState(null);
+  const [nomPays, setNomPays] = useState("");
+  const [options, setOptions] = useState([]);
+  const [bonneReponse, setBonneReponse] = useState("");
   const [message, setMessage] = useState("");
+  const [userAnswer, setUserAnswer] = useState(""); // Réponse de l'utilisateur
+  const [isCorrect, setIsCorrect] = useState(null);
+
+  const chargerNouvelleQuestion = async () => {
+    setUserAnswer(""); // Réinitialiser la réponse de l'utilisateur
+    setIsCorrect(null);
+
+    const country = await getRandomCountry(); // Charger un pays aléatoire
+    if (!country || !country.flag || !country.name) return; // Vérification des données reçues
+
+    setDrapeau(country.flag);
+    setNomPays(country.name);
+    setBonneReponse(country.name); // Bonne réponse est le nom du pays
+    setMessage("");
+  };
 
   useEffect(() => {
-    loadCountry();
-    setIsCorrect(null);
+    const savedQuestion = localStorage.getItem("drapeauQuestion");
+    if (savedQuestion) {
+      const parsed = JSON.parse(savedQuestion);
+      setDrapeau(parsed.flag);
+      setNomPays(parsed.name);
+      setBonneReponse(parsed.name);
+    } else {
+      chargerNouvelleQuestion();
+    }
   }, []);
+  
+  useEffect(() => {
+    if (nomPays) {
+      localStorage.setItem(
+        "drapeauQuestion",
+        JSON.stringify({ flag: drapeau, name: nomPays })
+        
+      );
+      console.log(nomPays);
+    }
+  }, [drapeau, nomPays]);
+  
+  
 
-  const verifierReponse = (choix) => {
-    if (!currentCountry) return;
+  const verifierReponse = () => {
+    if (!bonneReponse || !userAnswer) return;
 
-    setSelectedAnswer(choix);
-    const correct = choix === currentCountry.capital;
+    const correct = userAnswer.trim().toLowerCase() === bonneReponse.trim().toLowerCase();
     setIsCorrect(correct);
 
     if (correct) {
       setMessage("Bonne réponse !");
-      setScore((prev) => prev + 10);
+      setScore((prevScore) => prevScore + 10);
     } else {
       setMessage("Mauvaise réponse !");
-      setVies((prev) => prev - 1);
+      setVies((prevVies) => prevVies - 1);
     }
 
-    setTimeout(() => {
-      setIsCorrect(null);
-      loadCountry();
-    }, 1000);
+    setTimeout(chargerNouvelleQuestion, 1000); // Charger une nouvelle question après un délai
   };
 
   if (vies <= 0) {
-    return <GameOverScreen mode="capitaleMode" onReplay={rejouer} onReturnMenu={retourMenu} />;
+    return <GameOverScreen mode="drapeauMode" onReplay={rejouer} onReturnMenu={retourMenu} />;
   }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-white px-4">
       <NavigationButtons />
+
       <h1 className="text-3xl md:text-4xl font-bold font-pixel mb-6 md:mb-8 neon-text text-center">
-        Trouve la capitale
+        Trouve le drapeau
       </h1>
 
-      <div className={`border-4 p-5 md:p-6 mt-6 md:mt-8 rounded-2xl shadow-lg flex flex-col items-center w-full max-w-md text-center transition-all duration-300 
-          ${isCorrect === true ? "border-green-500" : isCorrect === false ? "border-red-500" : "border-white"}`}
+      <div
+        className={`border-4 p-5 md:p-6 mt-6 md:mt-8 rounded-2xl shadow-lg flex flex-col items-center w-full max-w-md md:max-w-lg text-center transition-all duration-300
+          ${isCorrect === true ? "border-green-500" : isCorrect === false ? "border-red-500" : "border-white"}
+        `}
       >
         <div className="flex justify-between w-full px-4 mb-4">
-          <p className="text-base md:text-lg font-bold">Score: {score}</p>
-          <p className="text-base md:text-lg font-bold">❤️: {vies} </p>
+          <p className="text-white text-base md:text-lg font-bold">Score: {score}</p>
+          <p className="text-white text-base md:text-lg font-bold">❤️: {vies} </p>
         </div>
 
-        {currentCountry ? (
+        {drapeau ? (
           <>
             <div className="w-full flex justify-center mb-4">
-              <FlagDisplay flag={currentCountry.flag} className="rounded-lg shadow-md w-full max-h-32 object-cover" />
+              <FlagDisplay flag={drapeau} className="rounded-lg shadow-md w-full max-h-32 md:max-h-40 object-cover" />
             </div>
 
-            <p className="text-lg md:text-xl mb-5 font-semibold">
-              Quelle est la capitale de {currentCountry.name} ?
+            <p className="text-lg md:text-xl mb-5 md:mb-6 font-semibold">
+              Quel est le pays de ce drapeau ?
             </p>
 
-            <div className="grid grid-cols-2 gap-3 w-full">
-              {currentCountry.options.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => verifierReponse(option)}
-                  className={`px-4 py-2 border-2 text-white font-bold rounded-lg transition-all duration-300 text-sm text-center break-words w-full
-                    ${selectedAnswer
-                      ? option === currentCountry.capital
-                        ? "border-green-500"
-                        : option === selectedAnswer
-                        ? "border-red-500"
-                        : "border-white"
-                      : "border-white hover:shadow-lg hover:scale-105 active:scale-95"}`}
-                >
-                  {option}
-                </button>
-              ))}
+            <div className="w-full mb-4">
+              <input
+                type="text"
+                value={userAnswer}
+                onChange={(e) => setUserAnswer(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && verifierReponse()} // Vérifier la réponse sur Entrée
+                className="w-full px-4 py-2 md:px-6 md:py-3 border-2 text-white font-bold rounded-lg transition-all duration-300 text-sm md:text-lg text-center break-words max-w-[90%] w-full border-white hover:shadow-lg hover:scale-105 active:scale-95"
+                placeholder="Tapez votre réponse ici"
+              />
             </div>
 
             {message && (
-              <p className={`mt-4 text-lg ${isCorrect ? "text-green-500" : "text-red-500"}`}>
+              <p className={`mt-4 text-lg ${message.includes("Bonne") ? "text-green-400" : "text-red-400"}`}>
                 {message}
               </p>
             )}
