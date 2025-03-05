@@ -16,10 +16,12 @@ export default function MapGame() {
   const [message, setMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(null);
   const [currentCountryState, setCurrentCountry] = useState(null); // Etat pour stocker le pays actuel
+  const [correctCountry, setCorrectCountry] = useState(null); // Etat pour stocker le pays correct à afficher en vert
 
   const chargerNouvelleQuestion = async () => {
     setMessage(""); // Réinitialiser les messages
     setIsCorrect(null); // Réinitialiser la validation de réponse
+    setCorrectCountry(null); // Réinitialiser le pays correct
 
     const country = await getRandomCountry(); // Charger un pays aléatoire
     if (!country || !country.name) return; // Vérifier que le pays est valide
@@ -28,7 +30,6 @@ export default function MapGame() {
     setNomPaysOfficiel(country.nameOfficial);
     setCurrentCountry(country); // Définir le pays actuel
 };
-
 
   // Charger une question au démarrage (si nécessaire)
   useEffect(() => {
@@ -54,15 +55,14 @@ export default function MapGame() {
         })
       );
     }
-  }, [currentCountryState]); // Se déclenche uniquement lorsque currentCountryState change
-  
+  }, [currentCountryState]);
 
   const handleClick = (geo) => {
     const englishNameFromApi = currentCountryState?.nameOfficial || "Nom non disponible"; // Nom officiel du pays
     const englishNameClicked = geo.properties.name; // Nom du pays cliqué sur la carte
-  
+
     console.log(`Pays cliqué: ${englishNameClicked}, Pays actuel: ${englishNameFromApi}`);
-  
+
     // Vérifie si currentCountryState est bien défini et si le nom officiel correspond
     if (englishNameFromApi !== "Nom non disponible" && englishNameFromApi === englishNameClicked) {
       setMessage("Bonne réponse !");
@@ -72,14 +72,14 @@ export default function MapGame() {
       setMessage("Mauvaise réponse !");
       setVies((prev) => prev - 1);
       setIsCorrect(false);
+      setCorrectCountry(currentCountryState); // Sauvegarder le pays correct pour l'affichage
     }
-  
+
     setTimeout(() => {
       setIsCorrect(null);
       chargerNouvelleQuestion(); // Charger un nouveau pays après chaque question
     }, 2000);
   };
-  
 
   // Vérification si currentCountry est bien chargé
   if (!currentCountryState) {
@@ -100,8 +100,7 @@ export default function MapGame() {
   
       <div
         className={`border-4 p-5 md:p-6 mt-6 md:mt-8 rounded-2xl shadow-lg flex flex-col items-center w-full max-w-md md:max-w-lg text-center transition-all duration-300
-          ${isCorrect === true ? "border-green-500" : isCorrect === false ? "border-red-500" : "border-white"}
-        `}
+          ${isCorrect === true ? "border-green-500" : isCorrect === false ? "border-red-500" : "border-white"}`}
       >
         <div className="flex justify-between w-full px-4 mb-4">
           <p className="text-white text-base md:text-lg font-bold">Score: {score}</p>
@@ -124,7 +123,11 @@ export default function MapGame() {
                         geography={geo}
                         onClick={() => handleClick(geo)}
                         style={{
-                          default: { fill: "#DDD", stroke: "#000", strokeWidth: 0.5 },
+                          default: {
+                            fill: geo.properties.name === correctCountry?.nameOfficial ? "#4CAF50" : "#DDD", // Si c'est le bon pays, il est en vert
+                            stroke: "#000",
+                            strokeWidth: 0.5,
+                          },
                           hover: { fill: "#FF5722" },
                           pressed: { fill: "#4CAF50" },
                         }}
@@ -147,5 +150,4 @@ export default function MapGame() {
       </div>
     </div>
   );
-  
 }
