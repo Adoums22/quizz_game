@@ -4,6 +4,7 @@ import useGameStats from "../components/useGameStats";
 import { useGame } from "../context/GameContext";
 import { getRandomCountry } from "../services/countryService";
 import NavigationButtons from "../components/NavigationButtons";
+import GameOverScreen from "../components/GameOverScreen";
 
 export default function MapGame() {
   const { score, setScore, vies, setVies, rejouer, retourMenu } = useGameStats("mapMode");
@@ -83,6 +84,10 @@ export default function MapGame() {
   // Vérification si currentCountry est bien chargé
   if (!currentCountryState) {
     return <div>Chargement de la carte...</div>;
+  }
+
+  if (vies <= 0) {
+    return <GameOverScreen mode="mapMode" onReplay={rejouer} onReturnMenu={retourMenu} />;
   }
 
   return (
